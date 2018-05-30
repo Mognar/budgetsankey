@@ -1,0 +1,45 @@
+<html>
+<body>
+ <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<div id="sankey_multiple" style="width: 1000px; height: 600px;"></div>
+
+<script type="text/javascript">
+  google.charts.load("current", {packages:["sankey"]});
+  google.charts.setOnLoadCallback(drawChart);
+   function drawChart() {
+    var queryString = encodeURIComponent('range=A1:c2');
+
+      var query = new google.visualization.Query(
+          'https://docs.google.com/spreadsheets/d/1fRP-R3XLxeKOJb5YCQZVtYD7tDxyoeOEnc7zC70biZY/edit?usp=sharing');
+      query.send(handleQueryResponse);
+    }
+
+    function handleQueryResponse(response) {
+      if (response.isError()) {
+        alert('Error in query: ' + response.getMessage() + ' ' + response.getDetailedMessage());
+        return;
+      }
+	var colors = ['blue','black','green','red','red','red','red','red','yellow','yellow','orange','orange','orange','orange','orange','orange','orange','gray','brown','gray','teal','purple','pink','pink'];
+    // Set chart options
+    var options = {
+      width: "100%",
+	  sankey: {
+        node: {
+          colors: colors
+        },
+        link: {
+          colorMode: 'gradient',
+          colors: colors
+        }
+      }
+    };
+	var data = response.getDataTable();
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.Sankey(document.getElementById('sankey_multiple'));
+    chart.draw(data, options);
+   }
+</script>
+</body>
+</html>
